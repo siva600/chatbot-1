@@ -11,9 +11,9 @@ Named entity chunker
 from __future__ import print_function
 
 import os, re, pickle
-from xml.etree import ElementTree as ET
 
 from nltk.tag import ClassifierBasedTagger, pos_tag
+import defusedxml.ElementTree
 
 try:
     from nltk.classify import MaxentClassifier
@@ -215,7 +215,7 @@ def load_ace_file(textfile, fmt):
     # Read the xml file, and get a list of entities
     entities = []
     with open(annfile, 'r') as infile:
-        xml = ET.parse(infile).getroot()
+        xml = defusedxml.ElementTree.parse(infile).getroot()
     for entity in xml.findall('document/entity'):
         typ = entity.find('entity_type').text
         for mention in entity.findall('entity_mention'):
